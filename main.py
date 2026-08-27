@@ -1,24 +1,15 @@
 import folium
 from folium.plugins import HeatMap
-# import osmnx as ox
 import pandas as pd
 import webbrowser
 import os
 from mysql.connector import connect, Error
-# from mariadb.connector import connect, Error
 import csv
 
 
 def db_connect():
     try:
-        # 192.168.178.36
-        # localhost
-        # mysql -u root -p
-        # grant all privileges on *.* to 'root'@'localhost' identified by password 'bike_map_db_root' with grant option;
-        # grant all privileges on *.* to 'root'@'192.168.178.%' identified by password 'bike_map_db_root' with grant option;
-        # FLUSH PRIVILEGES;
-        # 50 conf: # vor bind address, port=3306, systemctl restart mariadb
-        return connect(host="192.168.178.36", user="root", password="bike_map_db_root", database="bike_map")
+        return connect(host="IP", user="USER", password="PW", database="DB")
     except Error as e:
         print(e)
 
@@ -39,10 +30,8 @@ def load_data():
 
 def plot_map():
     print("Initializing...")
-    # place = "Berlin, Germany"  # [52.51650031757565, 13.44113051062602], ox.geocode(place)
-    map_points = folium.Map(location=[52.51650031757565, 13.44113051062602], zoom_start=15, tiles="Stamen Toner")
-    map_heat = folium.Map(location=[52.51650031757565, 13.44113051062602], zoom_start=15, tiles="Stamen Toner")
-    # OpenStreetMap, Stamen Toner, Stamen Terrain, CartoDB positron, CartoDB dark_matter
+    map_points = folium.Map(location=[0.0, 0.0], zoom_start=15, tiles="Stamen Toner")
+    map_heat = folium.Map(location=[0.0, 0.0], zoom_start=15, tiles="Stamen Toner")
 
     print("Loading Data...")
     df = load_data()
@@ -73,9 +62,7 @@ def plot_map():
 
     print("Writing to disk...")
     file_points = "map_points.html"
-    # file_points = "/home/pi/share/map_points.html"
     file_heat = "map_heat.html"
-    # file_heat = "/home/pi/share/map_heat.html"
     map_points.save(file_points)
     map_heat.save(file_heat)
     print("Opening in browser...")
